@@ -125,6 +125,10 @@ public class Contoller : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "Exit")
+        {
+            Debug.Log("Exit");
+        }
         if (collision.gameObject.tag == "Water")
         {
             is_swiming = true;
