@@ -150,7 +150,7 @@ public class Contoller : MonoBehaviour
         if (collision.gameObject.tag == "Exit")
         {
             Debug.Log("Exit");
-            Camera.GetComponent<Transition>().nextLevel();
+            //Camera.GetComponent<Transition>().nextLevel();
         }
         if (collision.gameObject.tag == "Water")
         {
