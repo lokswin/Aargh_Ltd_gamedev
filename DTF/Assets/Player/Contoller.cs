@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Contoller : MonoBehaviour
 {
+    public Text first;
+    public Text second;
     private GameObject[] waters;
     [HideInInspector]
     public Vector2 displace_aiming;
@@ -33,6 +36,7 @@ public class Contoller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.visible = false;
         waters = GameObject.FindGameObjectsWithTag("Water");
         Player = GetComponent<Rigidbody2D>();
         P_Collider = GetComponent<BoxCollider2D>();
@@ -44,7 +48,7 @@ public class Contoller : MonoBehaviour
     }
 
     public void Reload()
-    {
+    {       
         GameObject[] go2destroy = GameObject.FindGameObjectsWithTag("Destroy");
         foreach (GameObject go in go2destroy)
         {
@@ -65,6 +69,7 @@ public class Contoller : MonoBehaviour
                 go.SetActive(false);
             is_XY = true;
             Debug.Log("I can Fly!");
+            first.text = "Полет";
         }
         else
         {
@@ -73,25 +78,33 @@ public class Contoller : MonoBehaviour
                 go.SetActive(true);
             is_XY = false;
             Debug.Log("I can Swim!");
+            first.text = "Плавание";
         }
         random = Random.Range(-1.0f, 1.0f);
         if (random > 0)
         {
             is_enable2tele = true;
             Debug.Log("I have Telecinesis!");
+            second.text = "Телекинез";
         }
         else
         {
             is_enable2tele = false;
             Debug.Log("I have Laser!");
+            second.text = "Лазерное зрение";
         }
         displace_X = new Vector2(1, Random.Range(-0.4f, -0.1f));
         displace_Y = new Vector2(Random.Range(0.1f, 0.6f), -1);
         displace_aiming = new Vector2(Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f));
+        is_swiming = false;
+        Motions.SetBool("is_flying", false);
+        Motions.SetBool("is_swiming", false);
     }
 
     void FixedUpdate()
     {
+        if (Input.GetKey(KeyCode.Escape))
+            Application.Quit();
         if (Input.GetKeyDown(KeyCode.R))
         {
             Reload();
@@ -149,8 +162,16 @@ public class Contoller : MonoBehaviour
     {
         if (collision.gameObject.tag == "Exit")
         {
-            Debug.Log("Exit");
-            //Camera.GetComponent<Transition>().nextLevel();
+            /*is_swiming = false;
+            Motions.SetBool("is_swiming", false);*/
+            Camera.main.transform.position += Vector3.right * 20.0f;
+            this.transform.position = new Vector2(13.32f, 3.32f);
+        }
+        if (collision.gameObject.tag == "End")
+        {
+            Reload();
+            Camera.main.transform.position = Vector3.forward * -10.0f;
+            this.transform.position = new Vector2(-7.9f, 1.8f);
         }
         if (collision.gameObject.tag == "Water")
         {
@@ -192,8 +213,16 @@ public class Contoller : MonoBehaviour
             {
                 RigidGO = hit.collider.gameObject;
             }
-            Vector2 force = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * 5.0f;
-            RigidGO.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+            if (is_enable2tele)
+            {
+                Vector2 force = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * 5.0f;
+                RigidGO.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+            }
+            else
+            {
+                hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.clear;
+                hit.collider.enabled = false;
+            }
         }
     }
 
