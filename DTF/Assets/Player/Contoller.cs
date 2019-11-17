@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Contoller : MonoBehaviour
 {
+    private GameObject[] waters;
     [HideInInspector]
     public Vector2 displace_aiming;
     [HideInInspector]
@@ -12,6 +13,8 @@ public class Contoller : MonoBehaviour
     public Transform EyePivotFly;
     public Transform EyePivotSwim;
     private bool is_enable2fly;
+    [HideInInspector]
+    public bool is_enable2tele;
     private bool is_XY;
     private bool is_swiming;
 
@@ -30,6 +33,7 @@ public class Contoller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        waters = GameObject.FindGameObjectsWithTag("Water");
         Player = GetComponent<Rigidbody2D>();
         P_Collider = GetComponent<BoxCollider2D>();
         ColliderVertical = P_Collider.size;
@@ -41,6 +45,11 @@ public class Contoller : MonoBehaviour
 
     public void Reload()
     {
+        GameObject[] go2destroy = GameObject.FindGameObjectsWithTag("Destroy");
+        foreach (GameObject go in go2destroy)
+        {
+            Destroy(go);
+        }
         GameObject[] interactive = GameObject.FindGameObjectsWithTag("Interactive");
         foreach(GameObject go in interactive)
         {
@@ -52,16 +61,30 @@ public class Contoller : MonoBehaviour
         if (random > 0)
         {
             is_enable2fly = true;
+            foreach (GameObject go in waters)
+                go.SetActive(false);
             is_XY = true;
             Debug.Log("I can Fly!");
         }
         else
         {
             is_enable2fly = false;
+            foreach (GameObject go in waters)
+                go.SetActive(true);
             is_XY = false;
             Debug.Log("I can Swim!");
         }
-
+        random = Random.Range(-1.0f, 1.0f);
+        if (random > 0)
+        {
+            is_enable2tele = true;
+            Debug.Log("I have Telecinesis!");
+        }
+        else
+        {
+            is_enable2tele = false;
+            Debug.Log("I have Laser!");
+        }
         displace_X = new Vector2(1, Random.Range(-0.4f, -0.1f));
         displace_Y = new Vector2(Random.Range(0.1f, 0.6f), -1);
         displace_aiming = new Vector2(Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f));
@@ -69,10 +92,9 @@ public class Contoller : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             Reload();
-            return;
         }
         float MoveX = Input.GetAxis("Horizontal");
         float MoveY = Input.GetAxis("Vertical");
@@ -128,6 +150,7 @@ public class Contoller : MonoBehaviour
         if (collision.gameObject.tag == "Exit")
         {
             Debug.Log("Exit");
+            Camera.GetComponent<Transition>().nextLevel();
         }
         if (collision.gameObject.tag == "Water")
         {
@@ -154,10 +177,23 @@ public class Contoller : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(eyes_position, direction, distance);
         //If something was hit, the RaycastHit2D.collider will not be null.
-        if (hit.collider != null && hit.collider.gameObject.tag == "Interactive")
+        if (hit.collider != null && (hit.collider.gameObject.tag == "Interactive" || hit.collider.gameObject.tag == "Destroy"))
         {
-            hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.clear;
-            hit.collider.enabled = false;
+            GameObject RigidGO;
+            if (is_enable2tele && hit.collider.gameObject.tag != "Destroy")
+            {
+                RigidGO = (GameObject)Instantiate(hit.collider.gameObject);
+                RigidGO.AddComponent<Rigidbody2D>();
+                RigidGO.tag = "Destroy";
+                hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.clear;
+                hit.collider.enabled = false;
+            }
+            else
+            {
+                RigidGO = hit.collider.gameObject;
+            }
+            Vector2 force = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * 5.0f;
+            RigidGO.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
     }
 
