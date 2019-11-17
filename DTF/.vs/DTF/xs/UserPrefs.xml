@@ -1,7 +1,8 @@
 ﻿<Properties StartupConfiguration="{65AC8FD4-0A43-D51B-E200-E8F8A299FA48}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Player/Contoller.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Water.cs">
     <Files>
-      <File FileName="Assets/Player/Contoller.cs" Line="43" Column="1" />
+      <File FileName="Assets/Player/Contoller.cs" Line="39" Column="10" />
+      <File FileName="Assets/Water.cs" Line="28" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

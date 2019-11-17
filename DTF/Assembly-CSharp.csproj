@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Player\Contoller.cs" />
+    <Compile Include="Assets\Water.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>/Users/acalandr/_Unity/DTF/DTF/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
