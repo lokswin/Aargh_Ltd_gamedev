@@ -294,8 +294,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 849105306}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.075, y: 1.68, z: 0}
-  m_LocalScale: {x: 18.117397, y: 1, z: 1}
+  m_LocalPosition: {x: -4.466, y: 1.68, z: 0}
+  m_LocalScale: {x: 9.33046, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -662,12 +662,12 @@ PrefabInstance:
     - target: {fileID: 6220564454507623412, guid: e9293524fd42c49e6a5f55847a2d7019,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.2376
+      value: -8.1513
       objectReference: {fileID: 0}
     - target: {fileID: 6220564454507623412, guid: e9293524fd42c49e6a5f55847a2d7019,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.808
+      value: 2.9474
       objectReference: {fileID: 0}
     - target: {fileID: 6220564454507623412, guid: e9293524fd42c49e6a5f55847a2d7019,
         type: 3}
@@ -713,6 +713,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220564454507623412, guid: e9293524fd42c49e6a5f55847a2d7019,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.11955794
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220564454507623412, guid: e9293524fd42c49e6a5f55847a2d7019,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.12941945
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220564454507623412, guid: e9293524fd42c49e6a5f55847a2d7019,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2941
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220564454507623414, guid: e9293524fd42c49e6a5f55847a2d7019,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -0.13221812
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220564454507623414, guid: e9293524fd42c49e6a5f55847a2d7019,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 8.797894
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220564454507623414, guid: e9293524fd42c49e6a5f55847a2d7019,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0.41147733
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220564454507623414, guid: e9293524fd42c49e6a5f55847a2d7019,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 4.391723
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9293524fd42c49e6a5f55847a2d7019, type: 3}
