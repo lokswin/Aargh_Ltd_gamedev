@@ -1,8 +1,8 @@
 ﻿<Properties StartupConfiguration="{65AC8FD4-0A43-D51B-E200-E8F8A299FA48}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Aiming.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Player/Aiming.cs">
     <Files>
-      <File FileName="Assets/Player/Contoller.cs" Line="66" Column="1" />
-      <File FileName="Assets/Aiming.cs" Line="1" Column="1" />
+      <File FileName="Assets/Player/Contoller.cs" Line="116" Column="35" />
+      <File FileName="Assets/Player/Aiming.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Contoller : MonoBehaviour
 {
-    public Transform EyeRay;
+    [HideInInspector]
     public Vector2 displace_aiming;
+    [HideInInspector]
+    public Vector3 eyes_position;
+    public Transform EyePivotStand;
+    public Transform EyePivotFly;
+    public Transform EyePivotSwim;
     private bool is_enable2fly;
     private bool is_XY;
     private bool is_swiming;
@@ -36,6 +41,12 @@ public class Contoller : MonoBehaviour
 
     public void Reload()
     {
+        GameObject[] interactive = GameObject.FindGameObjectsWithTag("Interactive");
+        foreach(GameObject go in interactive)
+        {
+            go.GetComponent<SpriteRenderer>().color = Color.white; 
+            go.GetComponent<Collider2D>().enabled = true;
+        }
         float random = Random.Range(-1.0f, 1.0f);
 
         if (random > 0)
@@ -58,6 +69,11 @@ public class Contoller : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (Input.GetKey(KeyCode.R))
+        {
+            Reload();
+            return;
+        }
         float MoveX = Input.GetAxis("Horizontal");
         float MoveY = Input.GetAxis("Vertical");
 
@@ -65,20 +81,37 @@ public class Contoller : MonoBehaviour
 
         Motions.SetFloat("X_Speed", Mathf.Abs(MoveX));
 
-        if (MoveX < 0) Sprite.flipX = true;
-        else if (MoveX > 0) Sprite.flipX = false;
+
 
         if (Mathf.Abs(Player.velocity.y) > 0.0f)
         {
             P_Collider.size = ColliderHorizontal;
-            if (is_enable2fly) Motions.SetBool("is_flying", true);
+            if (is_enable2fly)
+            {
+                Motions.SetBool("is_flying", true);
+                eyes_position = EyePivotFly.position;
+            }
         }
-        else
+        else if (!is_swiming)
         {
             P_Collider.size = ColliderVertical;
             if (is_enable2fly) Motions.SetBool("is_flying", false);
+            eyes_position = EyePivotStand.position;
         }
+        if (is_swiming)
+        {
+            eyes_position = EyePivotSwim.position;
+        }
+        if (MoveX < 0)
+        {
+            Sprite.flipX = true;
+            //eyes_position = new Vector3(eyes_position.x * -1.0f, eyes_position.y, eyes_position.z);
+        }
+        else if (MoveX > 0)
+        {
+            Sprite.flipX = false;
 
+        }
         if (Mathf.Abs(MoveX) > 0.0f)
         {
             velocity += displace_X * MoveX * speed;
@@ -94,6 +127,7 @@ public class Contoller : MonoBehaviour
     {
         if (collision.gameObject.tag == "Water")
         {
+            is_swiming = true;
             Motions.SetBool("is_swiming", true);
             is_XY = true;
         }
@@ -102,18 +136,25 @@ public class Contoller : MonoBehaviour
     {
         if (collision.gameObject.tag == "Water")
         {
+            is_swiming = false;
             Motions.SetBool("is_swiming", false);
             if (!is_enable2fly)
                 is_XY = false;
         }
     }
 
-    public void Fire(Vector3 aim)
+    public void Fire(Vector3 aim, float distance)
     {
         Debug.Log("Fire!");
-        EyeRay.rotation = Quaternion.FromToRotation(Vector3.right, this.transform.position - aim);
-        Vector3 scale = new Vector3(Vector3.Distance(this.transform.position, aim) / this.transform.localScale.x, EyeRay.localScale.y, 1);
-        EyeRay.localScale = scale;
+        Vector2 direction = aim - eyes_position;
+
+        RaycastHit2D hit = Physics2D.Raycast(eyes_position, direction, distance);
+        //If something was hit, the RaycastHit2D.collider will not be null.
+        if (hit.collider != null && hit.collider.gameObject.tag == "Interactive")
+        {
+            hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.clear;
+            hit.collider.enabled = false;
+        }
     }
 
 }
