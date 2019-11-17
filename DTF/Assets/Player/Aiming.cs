@@ -21,7 +21,7 @@ public class Aiming : MonoBehaviour
         status_wait = true;
         status_aiming = false;
         status_fire = false;
-        GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+        GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 0);
         EyeRay.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 0);
     }
 
@@ -31,7 +31,8 @@ public class Aiming : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && status_wait)
         {
             start_coord =  new Vector2 (Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-            this.transform.position = new Vector2((Random.Range(-8.0f, 8.0f)), Random.Range(-5.0f, 5.0f));
+            this.transform.position = new Vector2((Random.Range(Camera.main.transform.position.x - 8.0f, Camera.main.transform.position.x + 8.0f)), 
+            Random.Range(Camera.main.transform.position.y - 5.0f, Camera.main.transform.position.y + 5.0f));
             status_wait = false;
             status_aiming = true;
         }
@@ -44,12 +45,12 @@ public class Aiming : MonoBehaviour
 
         if (status_wait)
         {
-            GetComponent<SpriteRenderer>().color = Color.Lerp(GetComponent<SpriteRenderer>().color, new Color(1, 1, 1, 0), Time.deltaTime * 5.0f);
+            GetComponent<SpriteRenderer>().color = Color.Lerp(GetComponent<SpriteRenderer>().color, new Color(1, 0, 0, 0), Time.deltaTime * 5.0f);
         }
         if (status_aiming)
         {
             GetComponent<SpriteRenderer>().color = Color.Lerp(GetComponent<SpriteRenderer>().color, Color.white, Time.deltaTime * 5.0f);
-            Vector2 pos = new Vector2(Mathf.Clamp(this.transform.position.x + Input.GetAxis("Mouse X") * player.displace_aiming.x, -8.0f, 8.0f), Mathf.Clamp(this.transform.position.y + Input.GetAxis("Mouse Y") * player.displace_aiming.y, -5.0f, 5.0f));
+            Vector2 pos = new Vector2(Mathf.Clamp(this.transform.position.x + Input.GetAxis("Mouse X") * player.displace_aiming.x, Camera.main.transform.position.x - 8.0f, Camera.main.transform.position.x + 8.0f), Mathf.Clamp(this.transform.position.y + Input.GetAxis("Mouse Y") * player.displace_aiming.y, Camera.main.transform.position.y - 5.0f, Camera.main.transform.position.y + 5.0f));
             this.transform.position = pos;
             this.transform.rotation = Quaternion.FromToRotation(Vector3.right, player.eyes_position - this.transform.position);
         }
